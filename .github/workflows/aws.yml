@@ -1,0 +1,32 @@
+name: podfy infra user application
+
+env:
+  SERVICE_NAME: services-podfy-infra-user-application 
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [master]
+
+jobs:
+  deploy:
+    name: Deploy
+    env:
+       working-directory: ./pipeline   
+    runs-on: ubuntu-latest
+    steps:  
+     - uses: actions/checkout@master
+     - name: root directory
+       run: ls -R
+       working-directory: ${{env.worker-directory}}          
+     - name: Configure AWS credentials
+       id: credentialsaws
+       uses: aws-actions/configure-aws-credentials@v1
+       with:
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         aws-region: ${{ secrets.AWS_REGION }}
+     - name: AWS CloudFormation "Deploy CloudFormation Stack" Action for GitHub Actions
+       run: |
+            aws cloudformation deploy --template-file ./pipeline/deployment.yaml --stack-name ${{env.SERVICE_NAME}}
