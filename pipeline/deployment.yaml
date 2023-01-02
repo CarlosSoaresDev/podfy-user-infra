@@ -10,6 +10,10 @@ Parameters:
 
 Resources:
 
+# -------------------------------------------------------------------------
+# Deploy DynamoDb table
+# -------------------------------------------------------------------------
+
   DynamoDBTablePodfy: 
     Type: AWS::DynamoDB::Table
     Properties: 
@@ -48,6 +52,10 @@ Resources:
           ProvisionedThroughput: 
             ReadCapacityUnits: "5"
             WriteCapacityUnits: "5"
+
+# -------------------------------------------------------------------------
+# Deploy SQS Queue and queue DLQ
+# -------------------------------------------------------------------------
 
   QueuePodfy:
     Type: AWS::SQS::Queue
